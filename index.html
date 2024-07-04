@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stochastic Exponential Decay of 20 Genes</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div id="myPlot"></div>
+
+    <script>
+        // Generate data
+        const numGenes = 20;
+        const numTimepoints = 100;
+        const time = Array.from({length: numTimepoints}, (_, i) => i * 10 / (numTimepoints - 1));
+
+        // Create traces for each gene
+        const traces = [];
+        for (let i = 0; i < numGenes; i++) {
+            const decayRate = Math.random() * 0.6 + 0.2; // Random decay rate between 0.2 and 0.8
+            const expression = time.map(t => {
+                const noise = (Math.random() - 0.5) * 0.1; // Random noise between -0.05 and 0.05
+                return Math.max(0, Math.exp(-decayRate * t) + noise);
+            });
+            traces.push({
+                x: time,
+                y: expression,
+                mode: 'lines',
+                name: `Gene ${i+1}`
+            });
+        }
+
+        // Define layout
+        const layout = {
+            title: 'Stochastic Exponential Decay of 20 Genes',
+            xaxis: {title: 'Time'},
+            yaxis: {title: 'Gene Expression'},
+            legend: {title: {text: 'Genes'}}
+        };
+
+        // Create the plot
+        Plotly.newPlot('myPlot', traces, layout);
+    </script>
+</body>
+</html>
